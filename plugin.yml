@@ -1,0 +1,5 @@
+name: THICCsentials
+main: mc.thicc.thiccsentials.ThiccPlugin
+version: 1.0
+api-version: 1.16
+commands:
