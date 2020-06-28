@@ -3,6 +3,7 @@ package mc.thicc.thiccsentials;
 import java.util.Collection;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event.Result;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerBedEnterEvent;
@@ -21,7 +22,7 @@ public class SleepListener implements Listener {
 		Player eventPlayer = event.getPlayer();
 		
 		// get all players
-		Collection<? extends Player> players = ThiccPlugin.server.getOnlinePlayers();
+		//Collection<? extends Player> players = ThiccPlugin.server.getOnlinePlayers();
 		
 		if(eventPlayer.getWorld().getTime() < 12542) {
 			eventPlayer.sendMessage("Cannot sleep before night.");
@@ -29,19 +30,11 @@ public class SleepListener implements Listener {
 			return;
 		}
 		
-		// get percentage of players who are sleeping
-		float percentPlayersSleeping = (1 + playersSleeping(players)) / players.size();
-		float percent = (percentPlayersSleeping * 100);
-		
-		ThiccPlugin.server.broadcastMessage(eventPlayer.getDisplayName() + " is in bed~ ("+percent+"% sleeping)");
-		
-		// make sure 50% (configurable) is in bed
-		if(percent < 50) {
-			return;
+		if(event.getBedEnterResult() == PlayerBedEnterEvent.BedEnterResult.OK) {
+			event.setUseBed(Result.ALLOW);
 		}
 		
 		ThiccPlugin.server.broadcastMessage("Time set to 0.");
-		
 		for(World w : ThiccPlugin.server.getWorlds()) {
 			w.setTime(0);
 		}
@@ -53,15 +46,7 @@ public class SleepListener implements Listener {
 	@EventHandler
 	public void onPlayerBedLeave(PlayerBedLeaveEvent event) {
 		Player eventPlayer = event.getPlayer();
-		
-		// get all players
-		Collection<? extends Player> players = ThiccPlugin.server.getOnlinePlayers();
-		
-		// get percentage of players who are sleeping
-		float percentPlayersSleeping = playersSleeping(players) / players.size();
-		float percent = (percentPlayersSleeping * 100);
-		
-		ThiccPlugin.server.broadcastMessage(eventPlayer.getDisplayName() + " is out of bed. ("+percent+"% sleeping)");
+		ThiccPlugin.server.broadcastMessage(eventPlayer.getDisplayName() + " is out of bed.");
 	}
 	
 	
