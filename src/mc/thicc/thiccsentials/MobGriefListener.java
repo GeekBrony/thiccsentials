@@ -1,9 +1,6 @@
 package mc.thicc.thiccsentials;
-import org.bukkit.entity.Creeper;
-import org.bukkit.entity.Explosive;
-import org.bukkit.entity.TNTPrimed;
-import org.bukkit.entity.Entity;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.ExplosionPrimeEvent;
 
 public class MobGriefListener implements Listener {
@@ -14,11 +11,11 @@ public class MobGriefListener implements Listener {
 	}
 	
 	public void onExplosionPrime(ExplosionPrimeEvent event) {
-		Entity e = event.getEntity();
-		
-		if(e instanceof Creeper || e instanceof Explosive || e instanceof TNTPrimed) {
-			event.setCancelled(true);
-		}
+		event.setCancelled(true);
+	}
+	
+	public void onExplosion(EntityExplodeEvent event) {
+		event.setCancelled(true);
 	}
 
 }
